@@ -1,7 +1,6 @@
 const { user, game, game_category, game_genre, game_language, category, genre, language } = require("../models");
 const createError = require("http-errors");
 const setDate = require("../helpers/setDate");
-const { query } = require("express");
 
 class GameController {
   static createGame = async (req, res, next) => {
