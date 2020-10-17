@@ -35,7 +35,7 @@ class LanguageController {
               {
                 model: user,
                 required: false,
-                as: "Developer",
+                as: "developer",
               },
             ],
           },

@@ -35,7 +35,7 @@ class GenreController {
               {
                 model: user,
                 required: false,
-                as: "Developer",
+                as: "developer",
               },
             ],
           },

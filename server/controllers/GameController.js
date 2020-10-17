@@ -79,7 +79,7 @@ class GameController {
           {
             model: user,
             required: false,
-            as: "Developer",
+            as: "developer",
           },
         ],
       };
@@ -139,7 +139,7 @@ class GameController {
           {
             model: user,
             required: false,
-            as: "Developer",
+            as: "developer",
           },
         ],
       });

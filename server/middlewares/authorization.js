@@ -18,9 +18,9 @@ module.exports = {
       const user_id = req.UserData.id;
       const game_id = req.params.id;
       if (!game_id) throw createError(404, "Data Not Found");
-      const gameData = await game.findOne({ where: { id: game_id }, include: [{ model: user, as: "Developer", required: false }] });
+      const gameData = await game.findOne({ where: { id: game_id }, include: [{ model: user, as: "developer", required: false }] });
       if (!gameData) throw createError(404, "Data Not Found");
-      if (gameData.Developer.id != user_id) throw createError(401, "You are not authorized");
+      if (gameData.developer.id != user_id) throw createError(401, "You are not authorized");
       next();
     } catch (err) {
       next(err);

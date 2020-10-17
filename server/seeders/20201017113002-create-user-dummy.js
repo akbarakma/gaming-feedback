@@ -15,7 +15,7 @@ module.exports = {
     }, {
       email: 'testdev@test.com',
       password: hashPassword("testing"),
-      name: "Developer",
+      name: "developer",
       birth_date: new Date(),
       gender: 'Female',
       status: 1,
