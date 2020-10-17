@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       user.belongsToMany(models.user, { through: 'user_follower', as: 'followers', foreignKey: 'followed_user' });
       user.belongsToMany(models.user, { through: 'user_follower', as: 'following', foreignKey: 'following_user' });
       user.hasMany(models.game, { foreignKey: "user_id", as: "Developer" });
+      user.hasMany(models.game_feedback, { foreignKey: "user_id" });
     }
   };
   user.init({

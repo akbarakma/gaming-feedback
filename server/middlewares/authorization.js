@@ -25,5 +25,16 @@ module.exports = {
     } catch (err) {
       next(err);
     }
+  },
+  userAuth: async (req ,res, next) => {
+    try {
+      const { id, status } = req.UserData;
+      if (status) throw createError(401, "Must login as User instead of Developer");
+      const user_data = await user.findOne({ where: { id } });
+      if (user_data.status) throw createError(401, "Must login as User instead of Developer");
+      next();
+    } catch (err) {
+      next(err);
+    }
   }
 }
