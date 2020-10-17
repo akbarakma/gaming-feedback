@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       game_feedback_id: {
-        type: Sequelize.TEXT
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

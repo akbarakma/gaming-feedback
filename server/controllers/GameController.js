@@ -1,6 +1,7 @@
 const { user, game, game_category, game_genre, game_language, category, genre, language } = require("../models");
 const createError = require("http-errors");
 const setDate = require("../helpers/setDate");
+const { Op } = require("sequelize");
 
 class GameController {
   static createGame = async (req, res, next) => {
@@ -61,6 +62,7 @@ class GameController {
       let { sort, by, page } = req.query;
       if (!page || page < 1) page = 1;
       let query = {
+        where: {},
         include: [
           {
             model: category,
@@ -162,7 +164,7 @@ class GameController {
       if (description) query.description = description;
       if (about) query.about = about;
       if (main_image_path) query.main_image_path = main_image_path;
-      const result = await game.update(query, { where: { id } });
+      await game.update(query, { where: { id } });
       if (categoryArr) {
         await game_category.destroy({ where: { game_id: id } });
         await Promise.all(

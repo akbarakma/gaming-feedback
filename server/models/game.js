@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     release_date: DataTypes.DATE,
     buy_link: DataTypes.STRING,
     popularity: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       defaultValue: 0
     },
     website_link: DataTypes.STRING,

@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       popularity: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       website_link: {
         type: Sequelize.STRING

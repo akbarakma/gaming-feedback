@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   game_feedback_message.init({
     message: DataTypes.TEXT,
-    game_feedback_id: DataTypes.TEXT
+    game_feedback_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'game_feedback_message',
