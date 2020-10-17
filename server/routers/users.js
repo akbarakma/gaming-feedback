@@ -6,6 +6,8 @@ router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 router.get("/profile", authentication, UserController.getProfile);
 router.put("/profile/edit", authentication, UserController.editProfile);
-router.get("/profile/:id", authentication, UserController.getUserProfile);
+router.get("/profile/:id", UserController.getUserProfile);
+router.get("/follow/:id", authentication, UserController.followUser);
+router.get("/unfollow/:id", authentication, UserController.unfollowUser);
 
 module.exports = router;

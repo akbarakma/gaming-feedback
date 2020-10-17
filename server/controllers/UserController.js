@@ -1,4 +1,4 @@
-const { user } = require("../models");
+const { user, user_follower } = require("../models");
 const createError = require("http-errors");
 const { generateToken } = require("../helpers/jwt");
 const { comparePassword } = require("../helpers/bcrypt");
@@ -55,7 +55,7 @@ class UserController {
     } catch (err) {
       next(err);
     }
-  }
+  };
   static editProfile = async (req, res, next) => {
     try {
       const { id } = req.UserData;
@@ -82,7 +82,37 @@ class UserController {
     } catch (err) {
       next(err);
     }
-  }
+  };
+  static followUser = async (req, res, next) => {
+    try {
+      const following_user = req.UserData.id;
+      const followed_user = req.params.id;
+      if (following_user == followed_user) throw createError(400, "Cant follow yourself");
+      if (!followed_user) throw createError(404, "User Not Found");
+      const followedData = await user.findOne({ where: { id: followed_user } });
+      if (!followedData) throw createError(404, "User Not Found");
+      const followerData = await user_follower.findOne({ where: { following_user, followed_user } });
+      if (followerData) throw createError(400, "Already Following");
+      const result = await user_follower.create({ followed_user, following_user });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  };
+  static unfollowUser = async (req, res, next) => {
+    try {
+      const following_user = req.UserData.id;
+      const followed_user = req.params.id;
+      if (following_user == followed_user) throw createError(400, "Cant unfollow yourself");
+      if (!followed_user) throw createError(404, "User Not Found");
+      const followedData = await user.findOne({ where: { id: followed_user } });
+      if (!followedData) throw createError(404, "User Not Found");
+      await user_follower.destroy({ where: { followed_user, following_user } });
+      res.status(201).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = UserController;

@@ -10,12 +10,13 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
           notEmpty: {
             args: true,
             msg: 'Name cannot be empty'
           },
-      }
+        }
       },
       email: {
         type: Sequelize.STRING,
@@ -34,7 +35,7 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        ll: false,
+        allowNull: false,
         validate: {
           notEmpty: {
             args: true,
@@ -47,13 +48,21 @@ module.exports = {
         }
       },
       birth_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            args: true,
+            msg: 'Birth Date cannot be empty'
+          },
+        }
       },
       age: {
         type: Sequelize.INTEGER
       },
       gender: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
           isIn: {
             args: [['Male', 'Female', 'Others']],

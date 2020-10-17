@@ -13,11 +13,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      user.belongsToMany(models.user, { through: 'user_follower', as: 'followers', foreignKey: 'followed_user' });
+      user.belongsToMany(models.user, { through: 'user_follower', as: 'following', foreignKey: 'following_user' });
+      user.hasMany(models.game, { foreignKey: "user_id", as: "Developer" });
     }
   };
   user.init({
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
@@ -54,10 +58,20 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    birth_date: DataTypes.DATE,
+    birth_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Birth Date cannot be empty'
+        },
+      }
+    },
     age: DataTypes.INTEGER,
     gender: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         isIn: {
           args: [['Male', 'Female', 'Others']],
