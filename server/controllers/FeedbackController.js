@@ -1,4 +1,4 @@
-const { game, game_feedback, feedback_category, game_feedback_item, game_feedback_message } = require("../models");
+const { user, game, game_feedback, feedback_category, game_feedback_item, game_feedback_message } = require("../models");
 const createError = require("http-errors");
 const setDate = require("../helpers/setDate");
 const { Op } = require("sequelize");
@@ -33,11 +33,12 @@ class FeedbackController {
       );
       if (message) await game_feedback_message.create({ message, game_feedback_id: result.id });
       overall_rating = overall_rating.reduce((a, b) => a + b) / overall_rating.length;
+      overall_rating = Math.round(overall_rating);
       await game_feedback.update({ overall_rating }, { where: { id: result.id } });
       const gameFeedbackCount = await game_feedback.count();
       await game.update(
         {
-          popularity: (gameData.popularity + overall_rating) / gameFeedbackCount,
+          popularity: Math.round((gameData.popularity + overall_rating) / gameFeedbackCount),
         },
         { where: { id: game_id } }
       );
@@ -98,12 +99,13 @@ class FeedbackController {
           })
         );
         overall_rating = overall_rating.reduce((a, b) => a + b) / overall_rating.length;
+        overall_rating = Math.round(overall_rating);
         await game_feedback.update({ overall_rating }, { where: { id: feedbackData.id } });
         const gameFeedbackCount = await game_feedback.count();
         const newPopularity = (feedbackData.game.popularity + overall_rating - oldOverallRating) / gameFeedbackCount;
         await game.update(
           {
-            popularity: newPopularity,
+            popularity: Math.round(newPopularity),
           },
           { where: { id: feedbackData.game.id } }
         );
@@ -166,6 +168,26 @@ class FeedbackController {
         model: game_feedback,
         required: false,
         where: {},
+        include: [
+          {
+            model: game_feedback_item,
+            required: false,
+            include: [
+              {
+                model: feedback_category,
+                required: false,
+              },
+            ],
+          },
+          {
+            model: game_feedback_message,
+            required: false,
+          },
+          {
+            model: user,
+            required: false,
+          },
+        ],
       };
       const resPerPage = 10;
       const offset = resPerPage * page - resPerPage;
@@ -195,16 +217,26 @@ class FeedbackController {
       });
       if (!gameData) throw createError(404, "Game Not Found");
       const numOfResult = await game_feedback.count({ where: { game_id } });
+      const pages = Math.ceil(numOfResult / resPerPage);
+      const currentPage = Number(page);
       res.status(200).json({
-        data: gameData.game_feedbacks,
-        pages: Math.ceil(numOfResult / resPerPage),
-        currentPage: Number(page),
+        data: currentPage > pages ? [] : gameData.game_feedbacks,
+        pages,
+        currentPage,
         numOfResult,
       });
     } catch (err) {
       next(err);
     }
   };
+  static getFeedbackCategory = async (req,res, next) => {
+    try {
+      const result = await feedback_category.findAll();
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = FeedbackController;

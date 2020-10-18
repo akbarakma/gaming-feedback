@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { useDispatch } from 'react-redux';
+import { Form, Button, Nav } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { login } from "../store/actions/userAction";
 import { useHistory } from "react-router-dom";
 
@@ -21,7 +21,7 @@ export default () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     dispatch(login(formData, history));
-  }
+  };
   return (
     <div
       style={{
@@ -33,7 +33,7 @@ export default () => {
         minHeight: "90vh",
       }}
     >
-      <Form onSubmit={ onFormSubmit }>
+      <Form onSubmit={onFormSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" name="email" onChange={onFormChange} />
@@ -43,6 +43,9 @@ export default () => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" name="password" onChange={onFormChange} />
         </Form.Group>
+        <Form.Text id="passwordHelpBlock" muted>
+          <Nav.Link onClick={ () => history.push("/register") }>Not Register yet? Click here to register!</Nav.Link>
+        </Form.Text>
         <Button variant="primary" type="submit">
           Submit
         </Button>

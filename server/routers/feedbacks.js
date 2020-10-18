@@ -7,5 +7,6 @@ router.post("/create/:id", authentication, userAuth, FeedbackController.createFe
 router.put("/edit/:id", authentication, userAuth, FeedbackController.editFeedback);
 router.delete("/delete/:id", authentication, userAuth, FeedbackController.deleteFeedback);
 router.get("/games/:id", FeedbackController.getGameFeedback);
+router.get("/categories", FeedbackController.getFeedbackCategory);
 
 module.exports = router;

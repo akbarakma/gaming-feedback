@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./views/Home";
 import Login from "./views/Login";
+import Register from "./views/Register";
+import GameDetail from "./views/GameDetail";
 import { useDispatch } from "react-redux";
 import { getProfile } from "./store/actions/userAction";
 
@@ -21,6 +23,12 @@ function App() {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+          <Route path="/games/:id">
+            <GameDetail />
           </Route>
         </Switch>
       </Router>

@@ -49,13 +49,6 @@ module.exports = {
       },
       birth_date: {
         type: Sequelize.DATE,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            args: true,
-            msg: 'Birth Date cannot be empty'
-          },
-        }
       },
       age: {
         type: Sequelize.INTEGER

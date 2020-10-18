@@ -1,27 +1,54 @@
 import React from "react";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+import { logoutUser } from "../store/actions/userAction";
 
 export default () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.userReducer.user_data);
+  const logout = () => {
+    Swal.fire({
+      title: "Are you sure want to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Logout Success!", "", "success");
+        dispatch(logoutUser());
+      }
+    });
+  };
   return (
     <>
       <Navbar bg="light" expand="lg" sticky="top">
-        <Navbar.Brand href="/">Gaming Feedback</Navbar.Brand>
+        {/* eslint-disable-next-line */}
+        <a onClick={ () => history.push("/") } style={{ cursor: "pointer" }}>
+        <Navbar.Brand>Gaming Feedback</Navbar.Brand>
+        </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="mr-auto">
           <Nav className="mr-auto">
-            <Nav.Link href="/profile" style={{ color: "green" }}>Welcome, {userData.name}</Nav.Link>
+            {userData.name && (
+              <Nav.Link onClick={ () => history.push("/profile") } style={{ color: "green" }}>
+                Welcome, {userData.name}
+              </Nav.Link>
+            )}
           </Nav>
           <Nav>
-            {userData ? (
+            {userData.name ? (
               <Nav.Item as="li">
-                <Nav.Link href="/home" style={{ color: "red", marginRight: "10px" }}>
+                <Nav.Link onClick={logout} style={{ color: "red", marginRight: "10px" }}>
                   Logout
                 </Nav.Link>
               </Nav.Item>
             ) : (
-              <Nav.Link href="/login">Sign Up</Nav.Link>
+              <Nav.Link onClick={ () => history.push("/register") }>Sign Up</Nav.Link>
             )}
           </Nav>
           <Form inline>

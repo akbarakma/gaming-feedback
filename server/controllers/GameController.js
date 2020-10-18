@@ -108,10 +108,12 @@ class GameController {
       query.limit = resPerPage;
       const result = await game.findAll(query);
       const numOfResult = await game.count();
+      const pages = Math.ceil(numOfResult / resPerPage);
+      const currentPage = Number(page);
       res.status(200).json({
-        data: result,
-        pages: Math.ceil(numOfResult / resPerPage),
-        currentPage: Number(page),
+        data: currentPage > pages ? [] : result,
+        pages,
+        currentPage,
         numOfResult,
       });
     } catch (err) {
