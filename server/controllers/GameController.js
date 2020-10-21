@@ -59,22 +59,22 @@ class GameController {
   };
   static getAllGame = async (req, res, next) => {
     try {
-      let { sort, by, page } = req.query;
+      let { sort, by, page, category: categoryQuery, genre: genreQuery, language: languageQuery } = req.query;
       if (!page || page < 1) page = 1;
       let query = {
         where: {},
         include: [
           {
             model: category,
-            required: false,
+            required: true,
           },
           {
             model: genre,
-            required: false,
+            required: true,
           },
           {
             model: language,
-            required: false,
+            required: true,
           },
           {
             model: user,
@@ -106,8 +106,84 @@ class GameController {
       const offset = resPerPage * page - resPerPage;
       query.offset = offset;
       query.limit = resPerPage;
-      const result = await game.findAll(query);
-      const numOfResult = await game.count();
+      let result;
+      let numOfResult;
+      if (categoryQuery) {
+        result = await category.findOne({
+          where: { name: categoryQuery },
+          include: [
+            {
+              model: game,
+              required: false,
+              where: query.where,
+              include: query.include,
+            },
+          ],
+        });
+        if (result) result = result.games;
+        numOfResult = await game.count({
+          include: [
+            {
+              model: category,
+              required: true,
+              where: {
+                name: categoryQuery,
+              },
+            },
+          ],
+        });
+      } else if (genreQuery) {
+        result = await genre.findOne({
+          where: { name: genreQuery },
+          include: [
+            {
+              model: game,
+              required: false,
+              where: query.where,
+              include: query.include,
+            },
+          ],
+        });
+        if (result) result = result.games;
+        numOfResult = await game.count({
+          include: [
+            {
+              model: genre,
+              required: true,
+              where: {
+                name: genreQuery,
+              },
+            },
+          ],
+        });
+      } else if (languageQuery) {
+        result = await language.findOne({
+          where: { name: languageQuery },
+          include: [
+            {
+              model: game,
+              required: false,
+              where: query.where,
+              include: query.include,
+            },
+          ],
+        });
+        if (result) result = result.games;
+        numOfResult = await game.count({
+          include: [
+            {
+              model: language,
+              required: true,
+              where: {
+                name: languageQuery,
+              },
+            },
+          ],
+        });
+      } else {
+        result = await game.findAll(query);
+        numOfResult = await game.count();
+      }
       const pages = Math.ceil(numOfResult / resPerPage);
       const currentPage = Number(page);
       res.status(200).json({
@@ -210,6 +286,20 @@ class GameController {
       await game_language.destroy({ where: { game_id: id } });
       await game_genre.destroy({ where: { game_id: id } });
       res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static getGameInclude = async (req, res, next) => {
+    try {
+      const categoryResult = await category.findAll();
+      const genreResult = await genre.findAll();
+      const languageResult = await language.findAll();
+      res.status(200).json({
+        category: categoryResult,
+        genre: genreResult,
+        language: languageResult,
+      });
     } catch (err) {
       next(err);
     }

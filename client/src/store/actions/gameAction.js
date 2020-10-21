@@ -1,21 +1,30 @@
 import baseUrl from "../../hooks/baseUrl";
 import axios from "axios";
 import errorMessage from "../../hooks/errorMessage";
+import Swal from "sweetalert2";
 
-export const getAllGame = (setLoading) => {
+export const getAllGame = (query, setLoading) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios({
+      const gameData = await axios({
         method: "GET",
-        url: baseUrl + "/games/all",
+        url: baseUrl + "/games/all/" + query,
+      });
+      const gameIncludeData = await axios({
+        method: "GET",
+        url: baseUrl + "/games/games-include",
       });
       dispatch({
         type: "addGame",
-        payload: data.data,
+        payload: {
+          games: gameData.data,
+          gameInclude: gameIncludeData.data,
+        },
       });
       setLoading(false);
     } catch (err) {
       errorMessage(err);
+      setLoading(false);
     }
   };
 };
@@ -41,6 +50,7 @@ export const getSingleGame = (id, query, setLoading) => {
       setLoading(false);
     } catch (err) {
       errorMessage(err);
+      setLoading(false);
     }
   };
 };
@@ -58,6 +68,50 @@ export const getFeedbackCategories = () => {
       });
     } catch (err) {
       errorMessage(err);
+    }
+  };
+};
+
+export const addFeedbackToGame = (formData, id, setLoading, query, setEventKey, setPageFeed) => {
+  return async (dispatch) => {
+    try {
+      await axios({
+        method: "POST",
+        url: baseUrl + `/feedbacks/create/${id}`,
+        data: formData,
+        headers: {
+          token: localStorage.getItem("access_token"),
+        },
+      });
+      const feedbackData = await axios({
+        method: "GET",
+        url: baseUrl + `/feedbacks/games/${id}${query}`,
+      });
+      dispatch({
+        type: "addFeedbackGame",
+        payload: feedbackData.data,
+      });
+      setLoading(false);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      setEventKey("0");
+      setPageFeed(true);
+      Toast.fire({
+        icon: "success",
+        title: "Feedback Added!",
+      });
+    } catch (err) {
+      errorMessage(err);
+      setLoading(false);
     }
   };
 };

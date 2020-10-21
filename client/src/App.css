@@ -201,3 +201,10 @@
     font-weight:600
   }
 }
+
+.checkbox {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  transform: scale(2);
+}

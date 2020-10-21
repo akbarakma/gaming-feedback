@@ -72,6 +72,7 @@ export default (props) => {
     });
   };
   const [pageFeed, setPageFeed] = useState(true);
+  const [eventKey, setEventKey] = useState("0");
   return (
     <>
       <Container fluid>
@@ -89,17 +90,31 @@ export default (props) => {
                   {data.developer.name} <br />
                   {data.developer.location}
                 </Card.Footer>
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="0" activeKey={eventKey}>
                   <Card>
                     {pageFeed ? (
                       <Card.Header>
-                        <Accordion.Toggle as={Button} onClick={() => setPageFeed(!pageFeed)} variant="link" eventKey="1">
+                        <Accordion.Toggle
+                          as={Button}
+                          variant="link"
+                          onClick={() => {
+                            setPageFeed(!pageFeed);
+                            setEventKey("1");
+                          }}
+                        >
                           Write a Feedback to this Game
                         </Accordion.Toggle>
                       </Card.Header>
                     ) : (
                       <Card.Header>
-                        <Accordion.Toggle as={Button} onClick={() => setPageFeed(!pageFeed)} variant="link" eventKey="0">
+                        <Accordion.Toggle
+                          as={Button}
+                          onClick={() => {
+                            setPageFeed(!pageFeed);
+                            setEventKey("0");
+                          }}
+                          variant="link"
+                        >
                           See Recent Feedback
                         </Accordion.Toggle>
                       </Card.Header>
@@ -116,7 +131,20 @@ export default (props) => {
                   </Accordion.Collapse>
                   <Accordion.Collapse eventKey="1">
                     <div>
-                      <AddFeedbackCard />
+                      {localStorage.getItem("access_token") ? (
+                        <AddFeedbackCard setPageFeed={setPageFeed} setEventKey={setEventKey} />
+                      ) : (
+                        <>
+                          <br />
+                          <h3>
+                            {/* eslint-disable-next-line */}
+                            <a onClick={() => history.push("/register")} style={{ cursor: "pointer", color: "blue" }}>
+                              Sign Up!
+                            </a>{" "}
+                            To give this game a feedback
+                          </h3>
+                        </>
+                      )}
                     </div>
                   </Accordion.Collapse>
                 </Accordion>

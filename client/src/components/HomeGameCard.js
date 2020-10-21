@@ -19,6 +19,7 @@ export default (props) => {
           <h1>{data.popularity}</h1>
         </div>
         <div>
+          <br />
           <h4>Categories:</h4> <br />
           {data.categories.map((data, idx) => (
             <a href="/" key={idx}>
@@ -29,6 +30,7 @@ export default (props) => {
           ))}
         </div>
         <div>
+          <br />
           <h4>Genres:</h4> <br />
           {data.genres.map((data, idx) => (
             <a href="/" key={idx}>
@@ -39,6 +41,7 @@ export default (props) => {
           ))}
         </div>
         <div>
+          <br />
           <h4>Languages:</h4> <br />
           {data.languages.map((data, idx) => (
             <a href="/" key={idx}>
@@ -49,6 +52,7 @@ export default (props) => {
           ))}
         </div>
         <div>
+          <br />
           <h4>Release Date:</h4> <br />
           {data.release_date.substring(0, 10)}
         </div>

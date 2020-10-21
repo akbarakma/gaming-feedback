@@ -58,9 +58,6 @@ export default () => {
       }}
     >
       <Form style={{ marginTop: "20px", marginBottom: "50px" }} onSubmit={onFormSubmit}>
-        <Form.Group>
-          <Form.Check type="switch" onChange={switchButton} id="custom-switch" label="Register As Developer" />
-        </Form.Group>
         <Form.Row>
           <Form.Group as={Col}>
             <Form.Label>First Name</Form.Label>
@@ -93,6 +90,10 @@ export default () => {
         <Form.Group controlId="formGridAddress1">
           <Form.Label>Address</Form.Label>
           <Form.Control onChange={onFormChange} name="location" placeholder="1234 Main St" />
+        </Form.Group>
+        
+        <Form.Group>
+          <Form.Check type="switch" onChange={switchButton} id="custom-switch" label="Register As Developer" />
         </Form.Group>
 
         {!switchButt && (

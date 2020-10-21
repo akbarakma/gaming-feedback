@@ -8,5 +8,6 @@ router.get("/all", GameController.getAllGame);
 router.get("/single/:id", GameController.getSingleGame);
 router.put("/edit/:id", authentication, developerAuth, gameDevAuth, GameController.editGame);
 router.delete("/delete/:id", authentication, developerAuth, gameDevAuth, GameController.deleteGame);
+router.get("/games-include/", GameController.getGameInclude);
 
 module.exports = router;

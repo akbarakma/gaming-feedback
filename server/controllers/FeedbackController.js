@@ -189,7 +189,7 @@ class FeedbackController {
           },
         ],
       };
-      const resPerPage = 10;
+      const resPerPage = 4;
       const offset = resPerPage * page - resPerPage;
       query.offset = offset;
       query.limit = resPerPage;
