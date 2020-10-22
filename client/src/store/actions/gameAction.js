@@ -115,3 +115,28 @@ export const addFeedbackToGame = (formData, id, setLoading, query, setEventKey, 
     }
   };
 };
+
+export const addGame = (formData, setLoading, history) => {
+  return async () => {
+    try {
+      await axios({
+        method: "POST",
+        url: baseUrl + "/games/create",
+        data: {
+          ...formData,
+          categoryArr: JSON.stringify(formData.categoryArr),
+          genreArr: JSON.stringify(formData.genreArr),
+          languageArr: JSON.stringify(formData.languageArr),
+        },
+        headers: {
+          token: localStorage.getItem("access_token")
+        }
+      });
+      setLoading(false);
+      history.push("/profile");
+    } catch (err) {
+      errorMessage(err);
+      setLoading(false);
+    }
+  };
+};

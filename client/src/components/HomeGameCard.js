@@ -11,7 +11,10 @@ export default (props) => {
         <Card.Title>
           <h1>{data.title}</h1>
         </Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{data.developer.name}</Card.Subtitle>
+        {/* eslint-disable-next-line */}
+        <a onClick={() => history.push(`/profile/${data.developer.id}`)} style={{ cursor: "pointer" }}>
+          <Card.Subtitle className="mb-2 text-muted">{data.developer.name}</Card.Subtitle>
+        </a>
         <Card.Img variant="top" src={data.main_image_path} style={{ marginBottom: "20px" }} />
         <Card.Text style={{ textAlign: "left" }}>{data.description}</Card.Text>
         <div>

@@ -85,11 +85,14 @@ export default (props) => {
               <Card.Body>
                 <h2>About this Game:</h2> <br />
                 <h5 style={{ textAlign: "left" }}>{data.about ? data.about : data.description}</h5>
-                <Card.Footer className="text-muted mt-4" style={{ cursor: "pointer", marginBottom: "20px" }} onClick={() => history.push(`/games/${data.id}`)}>
-                  About Developer: <br />
-                  {data.developer.name} <br />
-                  {data.developer.location}
-                </Card.Footer>
+                {/* eslint-disable-next-line */}
+                <a onClick={() => history.push(`/profile/${data.developer.id}`)} style={{ cursor: "pointer" }}>
+                  <Card.Footer className="text-muted mt-4" style={{ cursor: "pointer", marginBottom: "20px" }} onClick={() => history.push(`/games/${data.id}`)}>
+                    About Developer: <br />
+                    {data.developer.name} <br />
+                    {data.developer.location}
+                  </Card.Footer>
+                </a>
                 <Accordion defaultActiveKey="0" activeKey={eventKey}>
                   <Card>
                     {pageFeed ? (

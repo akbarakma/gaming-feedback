@@ -29,7 +29,6 @@ export default () => {
         return (
           <>
             <HomeGameCard data={data} key={data.id} />
-            <Pagination currentPage={gameData.currentPage} pages={gameData.pages} />
           </>
         );
       });
@@ -101,6 +100,7 @@ export default () => {
                   </Card>
                 </Accordion>
                 <div style={{ marginTop: "20px" }}>{getGame()} </div>
+                <Pagination currentPage={gameData.currentPage} pages={gameData.pages} />
               </>
             )}
           </Col>

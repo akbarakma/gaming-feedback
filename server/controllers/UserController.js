@@ -1,4 +1,4 @@
-const { user, user_follower } = require("../models");
+const { user, user_follower, game_feedback, game_feedback_item, game_feedback_message, feedback_category, game, category, genre, language } = require("../models");
 const createError = require("http-errors");
 const { generateToken } = require("../helpers/jwt");
 const { comparePassword } = require("../helpers/bcrypt");
@@ -76,7 +76,40 @@ class UserController {
   static getUserProfile = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const result = await user.findOne({ where: { id } });
+      let query = {
+        where: { id },
+        include: [
+          {
+            model: game_feedback,
+            required: false,
+            include: [
+              {
+                model: game,
+                required: false,
+              },
+              {
+                model: game_feedback_item,
+                required: false,
+                include: [
+                  {
+                    model: feedback_category,
+                    required: false,
+                  },
+                ],
+              },
+              {
+                model: game_feedback_message,
+                required: false,
+              },
+              {
+                model: user,
+                required: false,
+              },
+            ],
+          },
+        ],
+      };
+      const result = await user.findOne(query);
       if (!result) throw createError(404, "User Not Found");
       res.status(200).json(result);
     } catch (err) {
@@ -109,6 +142,38 @@ class UserController {
       if (!followedData) throw createError(404, "User Not Found");
       await user_follower.destroy({ where: { followed_user, following_user } });
       res.status(201).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static getDeveloperGames = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await game.findAll({
+        where: {
+          user_id: id,
+        },
+        include: [
+          {
+            model: user,
+            required: false,
+            as: "developer",
+          },
+          {
+            model: category,
+            required: false,
+          },
+          {
+            model: genre,
+            required: false,
+          },
+          {
+            model: language,
+            required: false,
+          },
+        ],
+      });
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

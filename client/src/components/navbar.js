@@ -28,16 +28,23 @@ export default () => {
     <>
       <Navbar bg="light" expand="lg" sticky="top">
         {/* eslint-disable-next-line */}
-        <a onClick={ () => history.push("/") } style={{ cursor: "pointer" }}>
-        <Navbar.Brand>Gaming Feedback</Navbar.Brand>
+        <a onClick={() => history.push("/")} style={{ cursor: "pointer" }}>
+          <Navbar.Brand>Gaming Feedback</Navbar.Brand>
         </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="mr-auto">
           <Nav className="mr-auto">
             {userData.name && (
-              <Nav.Link onClick={ () => history.push("/profile") } style={{ color: "green" }}>
-                Welcome, {userData.name}
-              </Nav.Link>
+              <>
+                <Nav.Link onClick={() => history.push("/profile")} style={{ color: "green" }}>
+                  Welcome, {userData.name}
+                </Nav.Link>
+                {userData.status === 1 && (
+                  <Nav.Link onClick={() => history.push("/create/game")} style={{ color: "blueviolet" }}>
+                    Add a Game
+                  </Nav.Link>
+                )}
+              </>
             )}
           </Nav>
           <Nav>
@@ -48,7 +55,7 @@ export default () => {
                 </Nav.Link>
               </Nav.Item>
             ) : (
-              <Nav.Link onClick={ () => history.push("/register") }>Sign Up</Nav.Link>
+              <Nav.Link onClick={() => history.push("/register")}>Sign Up</Nav.Link>
             )}
           </Nav>
           <Form inline>
