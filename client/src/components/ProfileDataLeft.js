@@ -16,9 +16,11 @@ export default (props) => {
           <Card.Text style={{ textAlign: "left" }}>
             <b>Birth Date:</b> {data.birth_date && data.birth_date.substring(0, 10)}
           </Card.Text>
-          <Card.Text style={{ textAlign: "left" }}>
-            <b>Age:</b> {data.age ? data.age : "-"}
-          </Card.Text>
+          {!data.status && (
+            <Card.Text style={{ textAlign: "left" }}>
+              <b>Age:</b> {data.age ? data.age : "-"}
+            </Card.Text>
+          )}
           <Card.Text style={{ textAlign: "left" }}>
             <b>Gender:</b> {data.gender ? data.gender : "-"}
           </Card.Text>

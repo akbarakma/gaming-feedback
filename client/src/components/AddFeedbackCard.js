@@ -28,6 +28,7 @@ export default (props) => {
   }
   useEffect(() => {
     setInitForm();
+    // eslint-disable-next-line
   }, [feedbackCategories]);
   const onFormChange = (e) => {
     const { name, value } = e.target;
