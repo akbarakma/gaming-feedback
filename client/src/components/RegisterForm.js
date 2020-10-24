@@ -84,7 +84,7 @@ export default () => {
 
         <Form.Group>
           <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e)} />
+          <Form.Control type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
         </Form.Group>
 
         <Form.Group controlId="formGridAddress1">
