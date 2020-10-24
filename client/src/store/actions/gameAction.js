@@ -72,7 +72,7 @@ export const getFeedbackCategories = () => {
   };
 };
 
-export const addFeedbackToGame = (formData, id, setLoading, query, setEventKey, setPageFeed) => {
+export const addFeedbackToGame = (formData, id, setLoading, query, setEventKey, setPageFeed, setInitForm) => {
   return async (dispatch) => {
     try {
       await axios({
@@ -109,6 +109,7 @@ export const addFeedbackToGame = (formData, id, setLoading, query, setEventKey, 
         icon: "success",
         title: "Feedback Added!",
       });
+      setInitForm();
     } catch (err) {
       errorMessage(err);
       setLoading(false);

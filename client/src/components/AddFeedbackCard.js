@@ -20,11 +20,14 @@ export default (props) => {
     });
   };
   const [formData, setFormData] = useState([]);
-  useEffect(() => {
+  const setInitForm = () => {
     const initialForm = feedbackCategories.map((data) => {
       return { category: data.name, feedback: "", rating: 5 };
     });
     setFormData(initialForm);
+  }
+  useEffect(() => {
+    setInitForm();
   }, [feedbackCategories]);
   const onFormChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +60,7 @@ export default (props) => {
       });
     else {
       setLoading(true);
-      dispatch(addFeedbackToGame({ feedback_item: JSON.stringify(newForm), message: messageForDev }, id, setLoading, search, setEventKey, setPageFeed));
+      dispatch(addFeedbackToGame({ feedback_item: JSON.stringify(newForm), message: messageForDev }, id, setLoading, search, setEventKey, setPageFeed, setInitForm));
     }
   };
   const [loading, setLoading] = useState(false);
